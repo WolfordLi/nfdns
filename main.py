@@ -111,5 +111,5 @@ while True:
         print("未能获取有效的值")
         break
 
-upload_unavailable()
+#upload_unavailable()
 print("work_done")
