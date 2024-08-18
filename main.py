@@ -96,16 +96,20 @@ region_map = {
 
 uuid = get_uuid()
 region = get_region()
-line = send_request(uuid, region)
+region_name = region_map.get(region, "未知地区")
 
-if line:
-    region_name = region_map.get(region, "未知地区")
-    print(f"从服务器获取的值: {line}")
-    # 将获取的值和地区名称传递给 main 函数
-    result = main(line, region_name)
-    while result != 0:
-        print("菜就多练 again")
+while True:
+    line = send_request(uuid, region)
+    if line:
+        print(f"从服务器获取的值: {line}")
         result = main(line, region_name)
-    upload_unavailable()
+        if result == 0:
+            break
+        else:
+            print("菜就多练 again")
+    else:
+        print("未能获取有效的值")
+        break
 
+upload_unavailable()
 print("work_done")
