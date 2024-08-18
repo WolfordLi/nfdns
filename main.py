@@ -36,6 +36,8 @@ def main(line, region_name):
                 print("done")
                 return 0
             else:
+                with open('unavailable.txt', 'a') as f:
+                    f.write(line + '\n')
                 return 1
         else:
             print("未能获取本地IP地址")
@@ -73,6 +75,17 @@ def send_request(uuid, region):
         print("请求失败:", response.json())
         return None
 
+def upload_unavailable():
+    with open('unavailable.txt', 'r') as f:
+        content = f.read()
+    url = "http://38.207.160.142:8080/upload_unavailable"
+    response = requests.post(url, data={'content': content})
+    if response.status_code == 200:
+        print("unavailable.txt 已上传到服务器")
+        os.remove('unavailable.txt')
+    else:
+        print("上传失败:", response.json())
+
 # 地区代码到中文名称的映射
 region_map = {
     "JP": "日本",
@@ -93,5 +106,6 @@ if line:
     while result != 0:
         print("菜就多练 again")
         result = main(line, region_name)
+    upload_unavailable()
 
 print("work_done")
