@@ -31,6 +31,7 @@ def main(line, region_name):
             result = os.popen("./nf")
             result = result.read()
             print(result)
+            
             if "您的出口IP完整解锁Netflix，支持非自制剧的观看" in result and f"所识别的IP地域信息：{region_name}" in result:
                 print("done")
                 return 0
