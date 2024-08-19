@@ -31,7 +31,7 @@ def main(line, region_name):
             result = os.popen("./nf")
             result = result.read()
             print(result)
-            
+            os.system('nslookup netflix.com')
             if "您的出口IP完整解锁Netflix，支持非自制剧的观看" in result and f"所识别的IP地域信息：{region_name}" in result:
                 print("done")
                 return 0
@@ -103,6 +103,7 @@ while True:
     if line:
         print(f"从服务器获取的值: {line}")
         result = main(line, region_name)
+
         if result == 0:
             break
         else:
