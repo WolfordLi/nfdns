@@ -101,7 +101,7 @@ def get_region():
 
 def get_media():
     print("请选择地区代码:")
-    print("GLOABLE -- SG")
+    print("GLOABLE -- GL")
     print("台湾HAMI -- HAMI")
     print("台湾动画疯 -- BAHAMUT")
     print("本地和国际流媒体不建议混用 请按需使用 否则不保证100%解锁")
