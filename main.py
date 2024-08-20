@@ -27,7 +27,7 @@ def main(line, region_name, media):
             os.system('echo y | bash dnsmasq_sniproxy.sh -ud')
             os.system(f'echo {line} | bash dnsmasq_sniproxy.sh -id')
             os.system("rm -rf /etc/resolv.conf && echo 'nameserver 127.0.0.1'>/etc/resolv.conf")
-            for _ in range(5):
+            for _ in range(10):
                 if media == "GL":
                     print("0")
                     result = os.popen("./nf")
