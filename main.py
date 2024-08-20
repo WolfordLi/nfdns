@@ -36,6 +36,9 @@ def main(line, region_name, media):
                 if "您的出口IP完整解锁Netflix，支持非自制剧的观看" in result and f"所识别的IP地域信息：{region_name}" in result:
                     print("done")
                     return 0
+                if "Netflix在您的出口IP所在的国家提供服务，但是您的IP疑似代理，无法正常使用服务" in result and f"所识别的IP地域信息：{region_name}" in result:
+                    print("done")
+                    return 0
                 else:
                     with open('unavailable.txt', 'a') as f:
                         f.write(line + '\n')
