@@ -37,10 +37,7 @@ def main(line, region_name, media):
                     if "您的出口IP完整解锁Netflix，支持非自制剧的观看" in result and f"所识别的IP地域信息：{region_name}" in result:
                         print("done")
                         return 0
-                    else:
-                        with open('unavailable.txt', 'a') as f:
-                            f.write(line + '\n')
-                            return 1
+                    
             if media == "HAMI":
                 process = subprocess.Popen(
                     'echo 1 | bash check.sh -M 4',
