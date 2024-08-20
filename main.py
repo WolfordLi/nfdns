@@ -26,7 +26,7 @@ def main(line, region_name, media):
             os.system("rm -rf /etc/resolv.conf && echo 'nameserver 8.8.4.4'>/etc/resolv.conf")
             os.system('echo y | bash dnsmasq_sniproxy.sh -ud')
             os.system(f'echo {line} | bash dnsmasq_sniproxy.sh -id')
-            os.system(f"rm -rf /etc/resolv.conf && echo 'nameserver {local_ip}'>/etc/resolv.conf")
+            os.system("rm -rf /etc/resolv.conf && echo 'nameserver 127.0.0.1'>/etc/resolv.conf")
             if media == 0:
                 result = os.popen("./nf")
                 result = result.read()
