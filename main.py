@@ -23,26 +23,24 @@ def main(line, region_name, media):
             os.system("systemctl stop systemd-resolved && systemctl disable systemd-resolved && rm -rf /etc/resolv.conf && echo 'nameserver 8.8.8.8'>/etc/resolv.conf")
             print(f"SNI Server IP: {line}")
             print(f"Server Region: {region_name}")
-            os.system("rm -rf /etc/resolv.conf && echo 'nameserver 8.8.4.4'>/etc/resolv.conf")
+            os.system("")rm -rf /etc/resolv.conf && echo 'nameserver 8.8.4.4'>/etc/resolv.conf
             os.system('echo y | bash dnsmasq_sniproxy.sh -ud')
             os.system(f'echo {line} | bash dnsmasq_sniproxy.sh -id')
             os.system("rm -rf /etc/resolv.conf && echo 'nameserver 127.0.0.1'>/etc/resolv.conf")
-            if media == "GL":
-                print("0")
-                result = os.popen("./nf")
-                result = result.read()
-                print(result)
-                os.system('nslookup netflix.com')
-                if "您的出口IP完整解锁Netflix，支持非自制剧的观看" in result and f"所识别的IP地域信息：{region_name}" in result:
-                    print("done")
-                    return 0
-                if "Netflix在您的出口IP所在的国家提供服务，但是您的IP疑似代理，无法正常使用服务" in result and f"所识别的IP地域信息：{region_name}" in result:
-                    print("done")
-                    return 0
-                else:
-                    with open('unavailable.txt', 'a') as f:
-                        f.write(line + '\n')
-                        return 1
+            for _ in range(5):
+                if media == "GL":
+                    print("0")
+                    result = os.popen("./nf")
+                    result = result.read()
+                    print(result)
+                    os.system('nslookup netflix.com')
+                    if "您的出口IP完整解锁Netflix，支持非自制剧的观看" in result and f"所识别的IP地域信息：{region_name}" in result:
+                        print("done")
+                        return 0
+                    else:
+                        with open('unavailable.txt', 'a') as f:
+                            f.write(line + '\n')
+                            return 1
             if media == "HAMI":
                 process = subprocess.Popen(
                     'echo 1 | bash check.sh -M 4',
