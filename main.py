@@ -1,6 +1,5 @@
 import os
-import random
-import linecache
+import subprocess
 import requests
 import socket
 
@@ -17,7 +16,7 @@ def get_local_ip():
         print(f"获取本地IP地址时出错: {e}")
         return None
 
-def main(line, region_name):
+def main(line, region_name, media):
     if line:
         local_ip = get_local_ip()
         if local_ip:
@@ -28,17 +27,50 @@ def main(line, region_name):
             os.system('echo y | bash dnsmasq_sniproxy.sh -ud')
             os.system(f'echo {line} | bash dnsmasq_sniproxy.sh -id')
             os.system(f"rm -rf /etc/resolv.conf && echo 'nameserver {local_ip}'>/etc/resolv.conf")
-            result = os.popen("./nf")
-            result = result.read()
-            print(result)
-            os.system('nslookup netflix.com')
-            if "您的出口IP完整解锁Netflix，支持非自制剧的观看" in result and f"所识别的IP地域信息：{region_name}" in result:
-                print("done")
-                return 0
-            else:
-                with open('unavailable.txt', 'a') as f:
-                    f.write(line + '\n')
-                return 1
+            if media == 0:
+                result = os.popen("./nf")
+                result = result.read()
+                print(result)
+                os.system('nslookup netflix.com')
+                if "您的出口IP完整解锁Netflix，支持非自制剧的观看" in result and f"所识别的IP地域信息：{region_name}" in result:
+                    print("done")
+                    return 0
+                else:
+                    with open('unavailable.txt', 'a') as f:
+                        f.write(line + '\n')
+                        return 1
+            if media == "HAMI":
+                process = subprocess.Popen(
+                    'echo 1 | bash check.sh -M 4',
+                    shell=True,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True
+                )
+                stdout, stderr = process.communicate()
+                output = stdout
+                print(output)
+                if "Hami Video:				[32mYes[0m" in output:
+                    print("done")
+                    return 0
+                else:
+                    return 1
+            if media == "BAHAMUT":
+                process = subprocess.Popen(
+                    'echo 1 | bash check.sh -M 4',
+                    shell=True,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True
+                )
+                stdout, stderr = process.communicate()
+                output = stdout
+                print(output)
+                if "Bahamut Anime:				[32mYes (Region: TW)[0m" in output:
+                    print("done")
+                    return 0
+                else:
+                    return 1
         else:
             print("未能获取本地IP地址")
             return 1
@@ -61,9 +93,19 @@ def get_region():
     print("日本 -- JP")
     print("香港 -- HK")
     print("新加坡 -- SG")
-    print("台湾省 -- TW")
+    print("台湾 -- TW")
+    print("本地和国际流媒体不建议混用 请按需使用 否则不保证100%解锁")
     region = input("请输入地区代码: ")
     return region
+
+def get_media():
+    print("请选择地区代码:")
+    print("GLOABLE -- 0")
+    print("台湾HAMI -- HAMI")
+    print("台湾动画疯 -- BAHAMUT")
+    print("本地和国际流媒体不建议混用 请按需使用 否则不保证100%解锁")
+    media = input("请输入媒体代码: ")
+    return media
 
 def send_request(uuid, region):
     url = f"http://38.207.160.142:8080?uuid={uuid}&region={region}"
@@ -91,18 +133,26 @@ region_map = {
     "JP": "日本",
     "HK": "香港",
     "SG": "新加坡",
-    "TW": "台湾"
+    "TW": "台湾",
+    "HAMI": "Hami Video:				[32mYes[0m",
+    "BAHAMUT": "Bahamut Anime:				[32mYes (Region: TW)[0m"
 }
 
 uuid = get_uuid()
 region = get_region()
 region_name = region_map.get(region, "未知地区")
+media = get_media()
+if media == "HAMI":
+    region = "HAMI"
+if media == "BAHAMUT":
+    region = "BAHAMUT"
 
 while True:
     line = send_request(uuid, region)
+
     if line:
         print(f"从服务器获取的值: {line}")
-        result = main(line, region_name)
+        result = main(line, region_name, media)
 
         if result == 0:
             break
