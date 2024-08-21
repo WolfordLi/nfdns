@@ -21,7 +21,7 @@ def main(line, region_name, media):
         local_ip = get_local_ip()
         if local_ip:
             os.system("systemctl stop systemd-resolved && systemctl disable systemd-resolved && rm -rf /etc/resolv.conf && echo 'nameserver 8.8.8.8'>/etc/resolv.conf")
-            print(f"SNI Server IP: {line}")
+            
             print(f"Server Region: {region_name}")
             os.system("rm -rf /etc/resolv.conf && echo 'nameserver 8.8.4.4'>/etc/resolv.conf")
             os.system('echo y | bash dnsmasq_sniproxy.sh -ud')
@@ -33,7 +33,6 @@ def main(line, region_name, media):
                     result = os.popen("./nf")
                     result = result.read()
                     print(result)
-                    os.system('nslookup netflix.com')
                     if "您的出口IP完整解锁Netflix，支持非自制剧的观看" in result and f"所识别的IP地域信息：{region_name}" in result:
                         print("done")
                         return 0
@@ -150,7 +149,7 @@ while True:
     line = send_request(uuid, region)
 
     if line:
-        print(f"从服务器获取的值: {line}")
+        
         result = main(line, region_name, media)
 
         if result == 0:
