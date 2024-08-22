@@ -69,6 +69,22 @@ def main(line, region_name, media):
                     return 0
                 else:
                     return 1
+                if media == "GPT":
+                process = subprocess.Popen(
+                    'echo 1 | bash check.sh -M 4',
+                    shell=True,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True
+                )
+                stdout, stderr = process.communicate()
+                output = stdout
+                print(output)
+                if "ChatGPT:				[32mYes[0m" in output:
+                    print("done")
+                    return 0
+                else:
+                    return 1
         else:
             print("未能获取本地IP地址")
             return 1
@@ -100,8 +116,10 @@ def get_media():
     print("请选择地区代码:")
     print("GLOABLE -- GL")
     print("台湾HAMI -- HAMI")
-    print("台湾动画疯 -- BAHAMUT")
+    print("台湾动画疯 - -BAHAMUT")
+    print("ChatGPT -- GPT")
     print("本地和国际流媒体不建议混用 请按需使用 否则不保证100%解锁")
+    print("GPT只保证解锁ChatGPT 其他流媒体和特定地区不保证解锁")
     media = input("请输入媒体代码: ")
     return media
 
@@ -133,18 +151,21 @@ region_map = {
     "SG": "新加坡",
     "TW": "台湾",
     "HAMI": "Hami Video:				[32mYes[0m",
-    "BAHAMUT": "Bahamut Anime:				[32mYes (Region: TW)[0m"
+    "BAHAMUT": "Bahamut Anime:				[32mYes (Region: TW)[0m",
+    "GPT": "ChatGPT:				[32mYes[0m"
 }
 
 uuid = get_uuid()
 region = get_region()
 region_name = region_map.get(region, "未知地区")
 media = get_media()
+#region变量是向服务器的请求值
 if media == "HAMI":
     region = "HAMI"
 if media == "BAHAMUT":
     region = "BAHAMUT"
-
+if media == "GPT":
+    region = "GPT"
 while True:
     line = send_request(uuid, region)
 
