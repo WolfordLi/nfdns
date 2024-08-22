@@ -19,6 +19,7 @@ def get_local_ip():
 
 
 def main(line, region_name, media):
+    print(media)
     if line:
         local_ip = get_local_ip()
         if local_ip:
