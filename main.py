@@ -74,6 +74,8 @@ def main(line, region_name, media):
                     return 1
                 
                 if media == "GPT":
+                    print(media)
+                    print("CHAT")
                     process = subprocess.Popen(
                         'echo 1 | bash check.sh -M 4',
                         shell=True,
@@ -81,14 +83,14 @@ def main(line, region_name, media):
                         stderr=subprocess.PIPE,
                         text=True
                     )
-                    stdout, stderr = process.communicate()
-                    output = stdout
-                    print(output)
-                    if "ChatGPT:				[32mYes[0m" in output:
-                        print("done")
-                        return 0
-                    else:
-                        return 1
+                stdout, stderr = process.communicate()
+                output = stdout
+                print(output)
+                if "ChatGPT:				[32mYes[0m" in output:
+                    print("done")
+                    return 0
+                else:
+                    return 1
         else:
             print("未能获取本地IP地址")
             return 1
