@@ -19,7 +19,6 @@ def get_local_ip():
 
 
 def main(line, region_name, media):
-    print(media)
     if line:
         local_ip = get_local_ip()
         if local_ip:
@@ -73,17 +72,14 @@ def main(line, region_name, media):
                     return 0
                 else:
                     return 1
-                
-                if media == "GPT":
-                    print(media)
-                    print("CHAT")
-                    process = subprocess.Popen(
-                        'echo 1 | bash check.sh -M 4',
-                        shell=True,
-                        stdout=subprocess.PIPE,
-                        stderr=subprocess.PIPE,
-                        text=True
-                    )
+            if media == "GPT":
+                process = subprocess.Popen(
+                    'echo 1 | bash check.sh -M 4',
+                    shell=True,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True
+                )
                 stdout, stderr = process.communicate()
                 output = stdout
                 print(output)
@@ -92,6 +88,8 @@ def main(line, region_name, media):
                     return 0
                 else:
                     return 1
+
+
         else:
             print("未能获取本地IP地址")
             return 1
