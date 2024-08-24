@@ -115,6 +115,7 @@ def get_region():
     print("香港 -- HK")
     print("新加坡 -- SG")
     print("台湾 -- TW")
+    print("美国")
     print("本地和国际流媒体不建议混用 请按需使用 否则不保证100%解锁")
     region = input("请输入地区代码: ")
     return region
@@ -161,6 +162,7 @@ region_map = {
     "HK": "香港",
     "SG": "新加坡",
     "TW": "台湾",
+    "US": "美国",
     "HAMI": "Hami Video:				[32mYes[0m",
     "BAHAMUT": "Bahamut Anime:				[32mYes (Region: TW)[0m",
     "GPT": "ChatGPT:				[32mYes[0m"
