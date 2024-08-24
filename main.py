@@ -115,7 +115,7 @@ def get_region():
     print("香港 -- HK")
     print("新加坡 -- SG")
     print("台湾 -- TW")
-    print("美国")
+    print("美国 -- US")
     print("本地和国际流媒体不建议混用 请按需使用 否则不保证100%解锁")
     region = input("请输入地区代码: ")
     return region
